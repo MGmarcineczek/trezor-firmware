@@ -13,6 +13,7 @@ from apps.common.paths import validate_path
 from .authorization import FEE_PER_ANONYMITY_DECIMALS, CoinJoinAuthorization
 from .common import BIP32_WALLET_DEPTH
 from .keychain import get_keychain_for_coin, validate_path_against_script_type
+from .sign_tx.layout import format_coin_amount
 
 if False:
     from trezor import wire
@@ -61,11 +62,9 @@ async def authorize_coinjoin(ctx: wire.Context, msg: AuthorizeCoinJoin) -> Succe
                 )
             )
         text.normal("Maximum total fees:")
-        text.bold(
-            "{} {}".format(
-                format_amount(msg.max_total_fee, coin.decimals), coin.coin_shortcut
-            )
-        )
+        # TODO: is this HACK or not?
+        coin.amount_unit = msg.amount_unit
+        text.bold(format_coin_amount(msg.max_total_fee, coin))
         await require_hold_to_confirm(ctx, text)
 
         set_authorization(CoinJoinAuthorization(msg, keychain, coin))

@@ -62,6 +62,9 @@ async def sign_tx(
         else:
             signer_class = bitcoinlike.Bitcoinlike
 
+    # TODO: is this HACK or not?
+    coin.amount_unit = msg.amount_unit
+
     signer = signer_class(msg, keychain, coin, approver).signer()
 
     res: Union[TxAckType, bool, None] = None

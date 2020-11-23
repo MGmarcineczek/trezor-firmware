@@ -2,7 +2,7 @@ from micropython import const
 from ubinascii import hexlify
 
 from trezor import ui
-from trezor.messages import ButtonRequestType, OutputScriptType
+from trezor.messages import AmountUnit, ButtonRequestType, OutputScriptType
 from trezor.strings import format_amount
 from trezor.ui.text import Text
 from trezor.utils import chunks
@@ -23,7 +23,22 @@ _LOCKTIME_TIMESTAMP_MIN_VALUE = const(500_000_000)
 
 
 def format_coin_amount(amount: int, coin: CoinInfo) -> str:
-    return "%s %s" % (format_amount(amount, coin.decimals), coin.coin_shortcut)
+    decimals, shortcut = coin.decimals, coin.coin_shortcut
+    if hasattr(coin, "amount_unit") and coin.amount_unit is not None:
+        if coin.amount_unit == AmountUnit.SATOSHI:
+            amount *= 1_0000_0000
+            decimals -= 8
+            shortcut = "sat"
+        elif coin.amount_unit == AmountUnit.MICROBITCOIN:
+            amount *= 1_000_000
+            decimals -= 6
+            shortcut = "u" + shortcut
+        elif coin.amount_unit == AmountUnit.MILLIBITCOIN:
+            amount *= 1_000
+            decimals -= 3
+            shortcut = "m" + shortcut
+        # we don't need to do anything for AmountUnit.BITCOIN
+    return "%s %s" % (format_amount(amount, decimals), shortcut)
 
 
 def split_address(address: str) -> Iterator[str]:
