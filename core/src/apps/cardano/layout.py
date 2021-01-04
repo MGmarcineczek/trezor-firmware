@@ -13,10 +13,11 @@ from trezor.strings import format_amount
 from trezor.ui.components.tt.button import ButtonDefault
 from trezor.ui.components.tt.scroll import Paginated
 from trezor.ui.components.tt.text import Text
+from trezor.ui.layouts import require, show_warning
 from trezor.utils import chunks
 
 from apps.common.confirm import confirm, require_confirm, require_hold_to_confirm
-from apps.common.layout import address_n_to_str, show_warning
+from apps.common.layout import address_n_to_str
 
 from . import seed
 from .address import (
@@ -394,43 +395,42 @@ async def show_warning_address_foreign_staking_key(
     staking_account_path: List[int],
     staking_key_hash: bytes,
 ) -> None:
-    await show_warning(
-        ctx,
-        (
-            "Stake rights associated",
-            "with this address do",
-            "not match your",
-            "account",
-            address_n_to_str(account_path),
-        ),
-        button="Ok",
+    await require(
+        show_warning(
+            ctx,
+            "cardano_warning_staking",
+            "Stake rights associated\nwith this address do\nnot match your\naccount\n"
+            + address_n_to_str(account_path),
+            button="Ok",
+        )
     )
 
     if staking_account_path:
-        staking_key_message = (
-            "Stake account path:",
-            address_n_to_str(staking_account_path),
+        staking_key_message = "Stake account path:\n" + address_n_to_str(
+            staking_account_path
         )
     else:
-        staking_key_message = ("Staking key:", hexlify(staking_key_hash).decode())
+        staking_key_message = "Staking key:\n" + hexlify(staking_key_hash).decode()
 
-    await show_warning(
-        ctx,
-        staking_key_message,
-        button="Ok",
+    await require(
+        show_warning(
+            ctx,
+            "cardano_warning_staking",
+            staking_key_message,
+            button="Ok",
+        )
     )
 
 
 async def show_warning_address_pointer(
     ctx: wire.Context, pointer: CardanoBlockchainPointerType
 ) -> None:
-    await show_warning(
-        ctx,
-        (
-            "Pointer address:",
-            "Block: %s" % pointer.block_index,
-            "Transaction: %s" % pointer.tx_index,
-            "Certificate: %s" % pointer.certificate_index,
-        ),
-        button="Ok",
+    await require(
+        show_warning(
+            ctx,
+            "cardano_warning_pointer",
+            "Pointer address:\nBlock: %s\nTransaction: %s\nCertificate: %s"
+            % (pointer.block_index, pointer.tx_index, pointer.certificate_index),
+            button="Ok",
+        )
     )
