@@ -17,18 +17,18 @@ class CardanoTxOutputType(p.MessageType):
     def __init__(
         self,
         *,
+        amount: int,
         address: str = None,
-        amount: int = None,
         address_parameters: CardanoAddressParametersType = None,
     ) -> None:
-        self.address = address
         self.amount = amount
+        self.address = address
         self.address_parameters = address_parameters
 
     @classmethod
     def get_fields(cls) -> Dict:
         return {
             1: ('address', p.UnicodeType, None),
-            3: ('amount', p.UVarintType, None),
+            3: ('amount', p.UVarintType, p.FLAG_REQUIRED),
             4: ('address_parameters', CardanoAddressParametersType, None),
         }

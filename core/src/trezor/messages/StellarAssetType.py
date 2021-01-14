@@ -15,9 +15,9 @@ class StellarAssetType(p.MessageType):
     def __init__(
         self,
         *,
-        type: int = None,
-        code: str = None,
-        issuer: str = None,
+        type: int,
+        code: str,
+        issuer: str,
     ) -> None:
         self.type = type
         self.code = code
@@ -26,7 +26,7 @@ class StellarAssetType(p.MessageType):
     @classmethod
     def get_fields(cls) -> Dict:
         return {
-            1: ('type', p.UVarintType, None),
-            2: ('code', p.UnicodeType, None),
-            3: ('issuer', p.UnicodeType, None),
+            1: ('type', p.UVarintType, p.FLAG_REQUIRED),
+            2: ('code', p.UnicodeType, p.FLAG_REQUIRED),
+            3: ('issuer', p.UnicodeType, p.FLAG_REQUIRED),
         }
