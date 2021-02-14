@@ -26,8 +26,18 @@ Example input:
 ```
 
 Example output:
+
 ```
-0x2E23de8D0fBb8229Af44d5cAAd4Fa73Ae24963a8
+23 0 14vb5Cws75p2i5rmSiF5CKMyezUX4hxSb9
+23 1 1Lf4ciA36dsi1niF6smVcpCiHcpj2skaPq
+23 2 1LraByp7gQAipvHnFS1gTSzixBtYaVyQGp
+23 3 1Hy6n56qZj1EefLVfDAeEpmveNteY9jpiG
+23 4 183Nn4mrUjPizM3xu8C6SrmViaWrk8YyRS
+42 1000 12eAFGAqGUtszc9R7euRqk7DUcQNXvQZSg
+42 1001 1BrLbFCD3MNYedJaz92U9iqy9ukHrtQ1A6
+42 1002 1Jhv33bJy229ThM7HKxUa92cMK5gi7DyPC
+42 1003 13LxbTjQPByisj4F4sZEivUBdnJwigzg6R
+42 1004 1BWBpSWkPwcKxVr2WDyUqQbmvk5SGihcx9
 ```
 
 It will print ```<jobid> error``` when there was an error processing job jobid.
